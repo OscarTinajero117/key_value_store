@@ -1,8 +1,6 @@
 defmodule KeyValueStore do
-  alias KeyValueStore.Server
-
   def start() do
-    Server.start()
+    KeyValueStore.Server.start()
   end
 
   def put(server, key, value) do
@@ -17,6 +15,7 @@ defmodule KeyValueStore do
 
   def get(server, key) do
     send(server, {:get, self(), key})
+
     receive do
       {:value, value} -> value
     end
@@ -24,6 +23,7 @@ defmodule KeyValueStore do
 
   def state(server) do
     send(server, {:state, self()})
+
     receive do
       {:store, store} -> store
     end
